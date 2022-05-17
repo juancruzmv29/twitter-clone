@@ -6,6 +6,7 @@ import logo from "../public/logotwitter.png";
 import Button from "../components/Button";
 import Link from "next/link";
 
+// PÁGINA DEL HOME
 export default function Home() {
   return (
     <div className="container">
