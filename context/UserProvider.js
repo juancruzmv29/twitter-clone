@@ -1,6 +1,4 @@
 import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
   onAuthStateChanged,
   OAuthProvider,
   GoogleAuthProvider,
@@ -10,22 +8,21 @@ import {
 import { createContext, useEffect, useState } from "react";
 import { auth } from "../firebase/client";
 
+export const USER_STATES = {
+  NOT_LOGGED: null,
+  NOT_KNOWN: undefined,
+};
+
 // CREAMOS EL CONTEXTO
 export const UserContext = createContext();
 
 // EL USERPROVIDER ES EL QUE LE VAMOS A UTILIZAR PARA PROVEER EL USUARIO Y LAS CREDENCIALES A LOS OTROS COMPONENTES
 const UserProvider = ({ children }) => {
   // Estado para el user
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(USER_STATES.NOT_KNOWN);
 
   // Provider para google
   const providerGoogle = new GoogleAuthProvider();
-  providerGoogle.addScope("https://www.googleapis.com/auth/contacts.readonly");
-
-  // Provider para apple
-  const providerApple = new OAuthProvider("apple.com");
-  providerApple.addScope("email");
-  providerApple.addScope("name");
 
   // Efecto para mostrar la información del usuario
   useEffect(() => {
@@ -44,24 +41,9 @@ const UserProvider = ({ children }) => {
     return () => unsuscribe();
   }, []);
 
-  // Para registrarse
-  const registerUser = (email, password) => {
-    createUserWithEmailAndPassword(auth, email, password);
-  };
-
-  // Para loguearse
-  const loginUser = (email, password) => {
-    signInWithEmailAndPassword(auth, email, password);
-  };
-
   // Para entrar con cuenta de Google
   const loginGoogle = () => {
     signInWithPopup(auth, providerGoogle);
-  };
-
-  // Para entrar con cuenta de Apple
-  const loginApple = () => {
-    signInWithPopup(auth, providerApple);
   };
 
   // Para desloguearse
@@ -74,10 +56,7 @@ const UserProvider = ({ children }) => {
       value={{
         user,
         setUser,
-        registerUser,
-        loginUser,
         loginGoogle,
-        loginApple,
         signOutUser,
       }}
     >

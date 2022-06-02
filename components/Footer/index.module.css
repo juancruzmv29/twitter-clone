@@ -1,0 +1,14 @@
+.footer {
+    display: flex;
+    height: 3vh;
+    background-color: black;
+    align-items: center;
+    justify-content: center;
+}
+
+.enlace {
+    font-size: 12px;
+    color: dimgray;
+    text-decoration: none;
+    margin-right: 5px;
+}
